@@ -36,6 +36,8 @@ export class AuthController {
 	) {
 		const accessToken = this.authService.issueJwtToken(user);
 		response.cookie("access-token", accessToken);
+
+		return { accessToken };
 	}
 
 	@ApiOperation({ summary: "인증 사용자 조회" })
