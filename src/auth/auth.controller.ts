@@ -1,7 +1,13 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from "@nestjs/common";
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import {
+	ApiBody,
+	ApiCreatedResponse,
+	ApiOkResponse,
+	ApiOperation,
+} from "@nestjs/swagger";
 import { User } from "@prisma/client";
 import { Response } from "express";
+import { UserEntity } from "~/users/entities/user.entity";
 import { UsersService } from "~/users/users.service";
 import { AuthService } from "./auth.service";
 import { Principal } from "./decorators/principal.decorator";
@@ -19,6 +25,7 @@ export class AuthController {
 	) {}
 
 	@ApiOperation({ summary: "회원가입" })
+	@ApiCreatedResponse({ type: UserEntity })
 	@Public()
 	@Post("sign-up")
 	signUp(@Body() signUpDto: SignUpDto) {
@@ -27,6 +34,9 @@ export class AuthController {
 
 	@ApiOperation({ summary: "로그인" })
 	@ApiBody({ type: SignInDto })
+	@ApiCreatedResponse({
+		schema: { properties: { accessToken: { type: "string" } } },
+	})
 	@Public()
 	@UseGuards(LocalAuthGuard)
 	@Post("sign-in")
@@ -41,6 +51,7 @@ export class AuthController {
 	}
 
 	@ApiOperation({ summary: "인증 사용자 조회" })
+	@ApiOkResponse({ type: UserEntity })
 	@Get("profile")
 	getProfile(@Principal() payload: Payload) {
 		return this.usersService.findOneByUsername(payload.username);
