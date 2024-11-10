@@ -20,5 +20,6 @@ export class SignInDto {
 			"비밀번호는 대소문자, 숫자, 특수문자를 포함해 8자 이상이어야 합니다.",
 	})
 	@IsStrongPassword()
+	@Length(8, 64)
 	password!: string;
 }
