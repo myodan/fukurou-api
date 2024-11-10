@@ -39,6 +39,7 @@ async function bootstrap() {
 		.setTitle("Fukurou API")
 		.setDescription("Fukurou API documentation")
 		.setVersion("1.0")
+		.addCookieAuth("access-token")
 		.build();
 
 	const document = SwaggerModule.createDocument(app, config);
