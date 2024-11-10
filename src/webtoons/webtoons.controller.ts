@@ -7,9 +7,16 @@ import {
 	Patch,
 	Post,
 } from "@nestjs/common";
-import { ApiOperation, ApiParam } from "@nestjs/swagger";
+import {
+	ApiCreatedResponse,
+	ApiOkResponse,
+	ApiOperation,
+	ApiParam,
+} from "@nestjs/swagger";
+import { EpisodeEntity } from "~/episodes/entities/episode.entity";
 import { CreateWebtoonDto } from "./dto/create-webtoon.dto";
 import { UpdateWebtoonDto } from "./dto/update-webtoon.dto";
+import { WebtoonEntity } from "./entities/webtoon.entity";
 import { WebtoonsService } from "./webtoons.service";
 
 @Controller("webtoons")
@@ -17,12 +24,14 @@ export class WebtoonsController {
 	constructor(private readonly webtoonsService: WebtoonsService) {}
 
 	@ApiOperation({ summary: "웹툰 생성" })
+	@ApiCreatedResponse({ type: WebtoonEntity })
 	@Post()
 	create(@Body() createWebtoonDto: CreateWebtoonDto) {
 		return this.webtoonsService.create(createWebtoonDto);
 	}
 
 	@ApiOperation({ summary: "웹툰 목록 조회" })
+	@ApiOkResponse({ type: WebtoonEntity, isArray: true })
 	@Get()
 	findAll() {
 		return this.webtoonsService.findAll();
@@ -30,6 +39,7 @@ export class WebtoonsController {
 
 	@ApiOperation({ summary: "웹툰 조회" })
 	@ApiParam({ name: "id", description: "웹툰 ID" })
+	@ApiOkResponse({ type: WebtoonEntity })
 	@Get(":id")
 	findOne(@Param("id") id: number) {
 		return this.webtoonsService.findOne(id);
@@ -37,6 +47,7 @@ export class WebtoonsController {
 
 	@ApiOperation({ summary: "웹툰 에피소드 목록 조회" })
 	@ApiParam({ name: "id", description: "웹툰 ID" })
+	@ApiOkResponse({ type: EpisodeEntity, isArray: true })
 	@Get(":id/episodes")
 	findAllEpisodes(@Param("id") id: number) {
 		return this.webtoonsService.findAllEpisodes(id);

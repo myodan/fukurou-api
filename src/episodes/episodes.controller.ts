@@ -7,9 +7,10 @@ import {
 	Patch,
 	Post,
 } from "@nestjs/common";
-import { ApiOperation, ApiParam } from "@nestjs/swagger";
+import { ApiCreatedResponse, ApiOperation, ApiParam } from "@nestjs/swagger";
 import { CreateEpisodeDto } from "./dto/create-episode.dto";
 import { UpdateEpisodeDto } from "./dto/update-episode.dto";
+import { EpisodeEntity } from "./entities/episode.entity";
 import { EpisodesService } from "./episodes.service";
 
 @Controller("episodes")
@@ -17,12 +18,14 @@ export class EpisodesController {
 	constructor(private readonly episodesService: EpisodesService) {}
 
 	@ApiOperation({ summary: "에피소드 생성" })
+	@ApiCreatedResponse({ type: EpisodeEntity })
 	@Post()
 	createEpisode(@Body() createEpisodeDto: CreateEpisodeDto) {
 		return this.episodesService.create(createEpisodeDto);
 	}
 
 	@ApiOperation({ summary: "에피소드 목록 조회" })
+	@ApiCreatedResponse({ type: EpisodeEntity, isArray: true })
 	@Get()
 	findAllEpisode() {
 		return this.episodesService.findAll();
@@ -30,6 +33,7 @@ export class EpisodesController {
 
 	@ApiOperation({ summary: "에피소드 조회" })
 	@ApiParam({ name: "id", description: "에피소드 ID" })
+	@ApiCreatedResponse({ type: EpisodeEntity })
 	@Get(":id")
 	findOneEpisode(@Param("id") id: number) {
 		return this.episodesService.findOne(id);
