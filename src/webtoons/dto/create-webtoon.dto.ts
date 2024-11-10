@@ -32,17 +32,15 @@ export class CreateWebtoonDto {
 	@IsEnum(DayOfWeek, { each: true })
 	daysOfWeek!: DayOfWeek[];
 
-	@ApiPropertyOptional({
-		description: "성인 콘텐츠 여부를 입력하세요.",
-	})
+	@ApiPropertyOptional({ description: "성인 콘텐츠 여부를 입력하세요." })
 	@IsOptional()
 	@IsBoolean()
-	isAdult?: boolean;
+	isAdult: boolean = false;
 
 	@ApiPropertyOptional({
 		description: "웹툰이 완결되었는지 여부를 입력하세요.",
 	})
 	@IsOptional()
 	@IsBoolean()
-	isFinished?: boolean;
+	isFinished: boolean = false;
 }
