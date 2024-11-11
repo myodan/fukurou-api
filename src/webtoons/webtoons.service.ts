@@ -20,7 +20,10 @@ export class WebtoonsService {
 	}
 
 	findAllEpisodes(id: number) {
-		return this.prismaService.episode.findMany({ where: { webtoonId: id } });
+		return this.prismaService.episode.findMany({
+			where: { webtoonId: id },
+			orderBy: { episodeNumber: "asc" },
+		});
 	}
 
 	update(id: number, updateWebtoonDto: UpdateWebtoonDto) {
