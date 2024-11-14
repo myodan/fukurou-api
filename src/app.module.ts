@@ -6,6 +6,7 @@ import { PrismaModule } from "nestjs-prisma";
 import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { EpisodesModule } from "./episodes/episodes.module";
+import { TagsModule } from "./tags/tags.module";
 import { UsersModule } from "./users/users.module";
 import { WebtoonsModule } from "./webtoons/webtoons.module";
 
@@ -35,6 +36,7 @@ import { WebtoonsModule } from "./webtoons/webtoons.module";
 		AuthModule,
 		WebtoonsModule,
 		EpisodesModule,
+		TagsModule,
 	],
 })
 export class AppModule {}

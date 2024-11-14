@@ -16,7 +16,10 @@ export class WebtoonsService {
 	}
 
 	findOne(id: number) {
-		return this.prismaService.webtoon.findUniqueOrThrow({ where: { id } });
+		return this.prismaService.webtoon.findUniqueOrThrow({
+			where: { id },
+			include: { tags: true },
+		});
 	}
 
 	findAllEpisodes(id: number) {
