@@ -15,16 +15,43 @@ export class UploadsService {
 	) {}
 
 	uploadFiles(files: Express.Multer.File[], path: string = "uploads") {
-		for (const file of files) {
-			this.minioService.putObject(
-				this.configService.getOrThrow("MINIO_BUCKET"),
-				`${path}/${uuid()}.${file.originalname.split(".").pop()}`,
-				file.buffer,
-				file.size,
-				{
-					"Content-Type": file.mimetype,
-				},
-			);
+		return Promise.all(
+			files.map(async (file) => {
+				const bucket = this.configService.getOrThrow("MINIO_BUCKET");
+				const id = uuid();
+				const extension = file.originalname.split(".").pop();
+
+				await this.minioService.putObject(
+					bucket,
+					`${path}/${id}.${extension}`,
+					file.buffer,
+					file.size,
+					{
+						"Content-Type": file.mimetype,
+					},
+				);
+
+				return this.getUrl(`${path}/${id}.${extension}`);
+			}),
+		);
+	}
+
+	getUrl(path: string) {
+		const protocol =
+			this.configService.getOrThrow("MINIO_USE_SSL") === "true"
+				? "https"
+				: "http";
+		const host = this.configService.getOrThrow("MINIO_ENDPOINT");
+		const port = this.configService.getOrThrow("MINIO_PORT");
+		const bucket = this.configService.getOrThrow("MINIO_BUCKET");
+
+		if (
+			(port === "80" && protocol === "http") ||
+			(port === "443" && protocol === "https")
+		) {
+			return `${protocol}://${host}/${bucket}/${path}`;
 		}
+
+		return `${protocol}://${host}:${port}/${bucket}/${path}`;
 	}
 }

@@ -54,10 +54,11 @@ model Episode {
   episodeNumber Int
   thumbnailUrl  String
   subtitle      String
-  webtoonId     Int
-  webtoon       Webtoon   @relation(fields: [webtoonId], references: [id])
   contents      String[]
   comments      Comment[]
+
+  webtoonId Int
+  webtoon   Webtoon @relation(fields: [webtoonId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

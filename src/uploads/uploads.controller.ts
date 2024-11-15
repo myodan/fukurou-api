@@ -29,6 +29,6 @@ export class UploadsController {
 		)
 		files: Express.Multer.File[],
 	) {
-		this.uploadsService.uploadFiles(files);
+		return this.uploadsService.uploadFiles(files);
 	}
 }
