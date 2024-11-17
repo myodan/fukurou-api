@@ -26,7 +26,7 @@ export class EpisodesService {
 	}
 
 	findAll() {
-		return this.prismaService.episode.findMany();
+		return this.prismaService.episode.findMany({ omit: { contents: true } });
 	}
 
 	findOne(id: number) {

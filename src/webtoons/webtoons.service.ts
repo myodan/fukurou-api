@@ -26,6 +26,7 @@ export class WebtoonsService {
 		return this.prismaService.episode.findMany({
 			where: { webtoonId: id },
 			orderBy: { episodeNumber: "asc" },
+			omit: { contents: true },
 		});
 	}
 

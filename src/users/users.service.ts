@@ -14,19 +14,26 @@ export class UsersService {
 				...createUserDto,
 				password: hashSync(createUserDto.password),
 			},
+			omit: { password: true },
 		});
 	}
 
 	findAll() {
-		return this.prismaService.user.findMany();
+		return this.prismaService.user.findMany({ omit: { password: true } });
 	}
 
 	findOne(id: number) {
-		return this.prismaService.user.findUniqueOrThrow({ where: { id } });
+		return this.prismaService.user.findUniqueOrThrow({
+			where: { id },
+			omit: { password: true },
+		});
 	}
 
 	findOneByUsername(username: string) {
-		return this.prismaService.user.findUniqueOrThrow({ where: { username } });
+		return this.prismaService.user.findUniqueOrThrow({
+			where: { username },
+			omit: { password: true },
+		});
 	}
 
 	update(id: number, updateUserDto: UpdateUserDto) {
